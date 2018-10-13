@@ -1,5 +1,6 @@
 {
   "name": "@teppeis/nock-back-mocha",
+  "description": "Use nock.back with your mocha tests with minimal hassle.",
   "version": "1.0.5",
   "author": "Teppei Sato <teppeis@gmail.com>",
   "publishConfig": {
