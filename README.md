@@ -25,4 +25,6 @@ describe('Tests that make http requests', function() {
 
 > Pro Tip: use in combination with [NOCK_BACK_MODE](https://github.com/pgte/nock#modes) to generate http fixtures for your tests
 
+----
+
 This is derived from [porchdotcom/nock-back-mocha](https://github.com/porchdotcom/nock-back-mocha) under ICS license.
