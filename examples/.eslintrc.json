@@ -1,0 +1,6 @@
+{
+    "extends": ["teppeis/node-v8"],
+    "env": {
+        "mocha": true
+    }
+}

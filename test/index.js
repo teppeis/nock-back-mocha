@@ -1,41 +1,40 @@
 'use strict';
 
-const path = require('path');
 const assert = require('assert');
+const nockBackMocha = require('..')();
 
 describe('nock-back-mocha', () => {
-  it('dangles nockDone on the currentTest', done => {
-    const nockBackMocha = require('..')(path.resolve(__dirname, 'fixtures'));
+  it('dangles nockDone on the currentTest', () => {
     const mochaContext = {
       currentTest: {
-        title: 'current test title',
+        titlePath: () => ['foo', 'bar', 'baz1'],
       },
     };
-    nockBackMocha.beforeEach.call(mochaContext, err => {
+    return nockBackMocha.beforeEach.call(mochaContext).then(() => {
       assert(
         typeof mochaContext.currentTest.nockDone === 'function',
         'nockDone must be set by beforeEach'
       );
-      done(err);
     });
   });
 
-  it('throws if file path is used more than once', done => {
-    const nockBackMocha = require('..')(path.resolve(__dirname, 'fixtures'));
+  it('throws if file path is used more than once', () => {
     const mochaContext = {
       currentTest: {
-        title: 'current test title',
+        titlePath: () => ['foo', 'bar', 'baz2'],
       },
     };
-    nockBackMocha.beforeEach.call(mochaContext, () => {
-      nockBackMocha.beforeEach.call(mochaContext, err => {
-        assert(
-          err &&
+    return nockBackMocha.beforeEach.call(mochaContext).then(() =>
+      nockBackMocha.beforeEach.call(mochaContext).then(
+        () => assert.fail('should be rejected'),
+        err => {
+          assert(err);
+          assert(
             err.message ===
-              'nock-back-mocha does not support multiple tests with the same name. current test title.json cannot be reused.'
-        );
-        done();
-      });
-    });
+              'nock-back-mocha does not support multiple tests with the same name. foo/bar/baz2.json cannot be reused.'
+          );
+        }
+      )
+    );
   });
 });
