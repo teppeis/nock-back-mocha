@@ -47,7 +47,8 @@ Use in combination with env [NOCK_BACK_MODE](https://github.com/nock/nock#modes)
 ## License
 
 MIT License: Teppei Sato &lt;teppeis@gmail.com&gt;
-Derived from [porchdotcom/nock-back-mocha](https://github.com/porchdotcom/nock-back-mocha) under ICS license.
+
+Derived from [porchdotcom/nock-back-mocha](https://github.com/porchdotcom/nock-back-mocha) under ICS license
 
 [npm-image]: https://img.shields.io/npm/v/@teppeis/nock-back-mocha.svg
 [npm-url]: https://npmjs.org/package/@teppeis/nock-back-mocha
