@@ -1,6 +1,6 @@
 # @teppeis/nock-back-mocha
 
-Thin wrapper around [nock.back](https://github.com/pgte/nock#nock-back) that uses different nock files for each test, and cleans up when the mocha test is done.
+Thin wrapper around [nock.back](https://github.com/nock/nock#nock-back) that uses different nock files for each test, and cleans up when the mocha test is done.
 
 [![npm version][npm-image]][npm-url]
 ![Node.js Version Support][node-version]
@@ -17,10 +17,10 @@ $ npm i -D @teppeis/nock-back-mocha
 ## Usage
 
 ```js
-const nockFixtureDirectory = path.resolve(__dirname, './fixtures');
-const nockBackMocha = require('nock-back-mocha')(nockFixtureDirectory);
+const {back} = require('nock');
+const nockBackMocha = require('nock-back-mocha')();
 
-describe('Tests that make http requests', () => {
+describe('Tests!', () => {
   beforeEach(nockBackMocha.beforeEach);
   afterEach(nockBackMocha.afterEach);
 
@@ -28,17 +28,21 @@ describe('Tests that make http requests', () => {
     request('http://example.com', (err, res, body) => {
       done(err);
     });
+    // "/path/to/__nock_fixtures__/Tests!/makes\ an\ http\ request.json"
+    console.log(back.fixtureFile);
   });
 });
 ```
 
-### API: `nockBackMocha(directory: string): {beforeEach: Function, afterEach: Function}`
+### API: `nockBackMocha(directory: string?): {beforeEach, afterEach}`
 
-- `directory`: where do you want the nock files stored?
+- `directory: string?`: Where do you want the nock files stored? The default is `__nock_fixtures__/` in the same directory.
+- `beforeEach: (this: MochaContext) => Promise`: Setup nock.back. Call in mocha's `beforeEach`.
+- `afterEach: (this: MochaContext) => void`: Tear down nock.back. Call in mocha's `afterEach`.
 
 ### Pro Tip
 
-Use in combination with [NOCK_BACK_MODE](https://github.com/pgte/nock#modes) to generate http fixtures for your tests
+Use in combination with env [NOCK_BACK_MODE](https://github.com/nock/nock#modes) to generate http fixtures for your tests
 
 ## License
 
