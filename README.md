@@ -17,28 +17,28 @@ $ npm i -D @teppeis/nock-back-mocha
 ## Usage
 
 ```js
-const {back} = require('nock');
 const nockBackMocha = require('nock-back-mocha')();
 
 describe('Tests!', () => {
   beforeEach(nockBackMocha.beforeEach);
   afterEach(nockBackMocha.afterEach);
 
-  it('makes an http request', done => {
-    request('http://example.com', (err, res, body) => {
-      done(err);
-    });
-    // "/path/to/__nock_fixtures__/Tests!/makes\ an\ http\ request.json"
-    console.log(back.fixtureFile);
-  });
+  it('makes an http request', () =>
+    fetch('http://example.com').then(() => {
+      // "/path/to/__nock_fixtures__/Tests!/makes\ an\ http\ request.json"
+      console.log(nockBackMocha.fixtureFile);
+      nockBackMocha.assertScopesFinished();
+    }));
 });
 ```
 
-### API: `nockBackMocha(directory: string?): {beforeEach, afterEach}`
+### API: `factory(directory: string?): Context`
 
-- `directory: string?`: Where do you want the nock files stored? The default is `__nock_fixtures__/` in the same directory.
-- `beforeEach: (this: MochaContext) => Promise`: Setup nock.back. Call in mocha's `beforeEach`.
-- `afterEach: (this: MochaContext) => void`: Tear down nock.back. Call in mocha's `afterEach`.
+- `directory: string?`: Where do you want the nock files stored? The default is `__nock_fixtures__` in the same directory.
+- `Context.beforeEach: (this: MochaContext) => Promise<undefined>`: Setup nock.back. Call in mocha's `beforeEach`.
+- `Context.afterEach: () => void`: Tear down nock.back. Call in mocha's `afterEach`.
+- `Context.fixtureFile: string`: Path to the fixture file for the current test.
+- `Context.assertScopesFinished: () => void`: Assert scopes finished. Also see nock document.
 
 ### Pro Tip
 

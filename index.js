@@ -8,10 +8,15 @@ function defaultFixtures() {
   return path.join(path.dirname(module.parent.filename), '__nock_fixtures__');
 }
 
-module.exports = (fixtures = defaultFixtures()) => {
+module.exports = function nockBackMocha(fixtures = defaultFixtures()) {
   const filenames = new Set();
-  return {
+  let previousFixtures;
+  const nockBackContext = {
+    fixtureFile: null,
+    assertScopesFinished: null,
+    nockDone: null,
     beforeEach() {
+      previousFixtures = nock.back.fixtures;
       const filename = `${path.join(...this.currentTest.titlePath().map(sanitize))}.json`;
       // make sure we're not reusing the nock file
       if (filenames.has(filename)) {
@@ -22,23 +27,25 @@ module.exports = (fixtures = defaultFixtures()) => {
         );
       }
       filenames.add(filename);
-      nock.back.fixtureFile = path.join(fixtures, filename);
-
-      const previousFixtures = nock.back.fixtures;
       nock.back.fixtures = fixtures;
+      nockBackContext.fixtureFile = path.join(fixtures, filename);
 
       return nock.back(filename).then(({nockDone, context}) => {
-        this.currentTest.nockDone = () => {
+        nockBackContext.assertScopesFinished = context.assertScopesFinished.bind(context);
+        nockBackContext.nockDone = () => {
           nockDone();
-          context.assertScopesFinished();
-          nock.back.fixtures = previousFixtures;
-          delete nock.back.fixtureFile;
         };
       });
     },
     afterEach() {
-      this.currentTest.nockDone();
-      delete this.currentTest.nockDone;
+      nock.back.fixtures = previousFixtures;
+      nockBackContext.fixtureFile = null;
+      nockBackContext.assertScopesFinished = null;
+      if (nockBackContext.nockDone) {
+        nockBackContext.nockDone();
+      }
+      nockBackContext.nockDone = null;
     },
   };
+  return nockBackContext;
 };
