@@ -38,7 +38,7 @@ describe('Tests!', () => {
 - `Context.beforeEach: (this: MochaContext) => Promise<undefined>`: Setup nock.back. Call in mocha's `beforeEach`.
 - `Context.afterEach: () => void`: Tear down nock.back. Call in mocha's `afterEach`.
 - `Context.fixtureFile: string`: Path to the fixture file for the current test.
-- `Context.assertScopesFinished: () => void`: Assert scopes finished. Also see nock document.
+- `Context.assertScopesFinished: () => void`: Assert all nocks in fixture were satisfied. See [nock document](https://github.com/nock/nock).
 
 ### Pro Tip
 
