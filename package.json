@@ -20,7 +20,7 @@
     "test": "run-s lint mocha"
   },
   "dependencies": {
-    "nock": "^10.0.3",
+    "nock": "^10.0.4",
     "sanitize-filename": "^1.6.1"
   },
   "devDependencies": {
