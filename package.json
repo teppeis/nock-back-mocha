@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "nock": "^10.0.6",
-    "sanitize-filename": "^1.6.1"
+    "sanitize-filename": "^1.6.2"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
