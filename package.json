@@ -32,7 +32,7 @@
     "power-assert": "^1.6.1",
     "prettier": "~1.18.2",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.7"
+    "request-promise-native": "^1.0.8"
   },
   "homepage": "https://github.com/teppeis/nock-back-mocha",
   "repository": {
