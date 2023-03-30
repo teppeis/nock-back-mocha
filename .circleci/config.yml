@@ -40,12 +40,12 @@ jobs:
   node-v6:
     <<: *node-base
     docker:
-      - image: node:6
+      - image: node:19
   node-v8:
     <<: *node-base
     docker:
-      - image: node:8
+      - image: node:19
   node-v10:
     <<: *node-base
     docker:
-      - image: node:10
+      - image: node:19
